@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance System</title>
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .btn-add {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-add:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn-present {
+            background-color: #28a745;
+            color: white;
+            padding: 6px 12px;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .btn-absent {
+            background-color: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .status-present {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-absent {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎒 Student Attendance Dashboard</h1>
+    
+    <!-- Form to add new students -->
+    <div class="form-group">
+        <input type="text" id="rollNo" placeholder="Enter Roll Number">
+        <input type="text" id="studentName" placeholder="Enter Student Name">
+        <button class="btn-add" onclick="addStudent()">Add Student</button>
+    </div>
+
+    <!-- Attendance Sheet Table -->
+    <h2>Attendance Sheet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="attendanceTableBody">
+            <!-- Default Rows -->
+            <tr>
+                <td>101</td>
+                <td>Alex Morgan</td>
+                <td><span class="status-badge status-pending" id="status-101">Pending</span></td>
+                <td>
+                    <button class="btn-present" onclick="markAttendance('101', 'Present')">P</button>
+                    <button class="btn-absent" onclick="markAttendance('101', 'Absent')">A</button>
+                </td>
+            </tr>
+            <tr>
+                <td>102</td>
+                <td>John Doe</td>
+                <td><span class="status-badge status-pending" id="status-102">Pending</span></td>
+                <td>
+                    <button class="btn-present" onclick="markAttendance('102', 'Present')">P</button>
+                    <button class="btn-absent" onclick="markAttendance('102', 'Absent')">A</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // JavaScript Logic
+    function addStudent() {
+        const rollInput = document.getElementById('rollNo');
+        const nameInput = document.getElementById('studentName');
+        
+        const rollNo = rollInput.value.trim();
+        const name = nameInput.value.trim();
+
+        if (rollNo === "" || name === "") {
+            alert("Please fill out both the Roll Number and Student Name.");
+            return;
+        }
+
+        const tableBody = document.getElementById('attendanceTableBody');
+        
+        // Create new table row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${rollNo}</td>
+            <td>${name}</td>
+            <td><span class="status-badge status-pending" id="status-${rollNo}">Pending</span></td>
+            <td>
+                <button class="btn-present" onclick="markAttendance('${rollNo}', 'Present')">P</button>
+                <button class="btn-absent" onclick="markAttendance('${rollNo}', 'Absent')">A</button>
+            </td>
+        `;
+
+        tableBody.appendChild(row);
+
+        // Clear form inputs
+        rollInput.value = "";
+        nameInput.value = "";
+    }
+
+    function markAttendance(rollNo, status) {
+        const statusBadge = document.getElementById(`status-${rollNo}`);
+        
+        if (status === 'Present') {
+            statusBadge.textContent = 'Present';
+            statusBadge.className = 'status-badge status-present';
+        } else if (status === 'Absent') {
+            statusBadge.textContent = 'Absent';
+            statusBadge.className = 'status-badge status-absent';
+        }
+    }
+</script>
+
+</body>
+</html>
